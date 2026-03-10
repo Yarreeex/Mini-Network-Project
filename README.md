@@ -5,7 +5,7 @@ This project involves the design and simulation of a large-scale enterprise netw
 
 The main challenge addressed in this project is ensuring secure isolation between departments, dynamic inter-building communication, and encrypted transmission of confidential data across the public internet.
 
-![Full Enterprise Network Topology](full.png)
+![Full Enterprise Network Topology](NetDesign/full.png)
 
 ## 🏗️ Network Architecture
 The network design is divided into two main areas, utilizing hierarchical architecture approaches tailored to the scale and requirements of each site:
@@ -13,7 +13,7 @@ The network design is divided into two main areas, utilizing hierarchical archit
 ### 1. Headquarters (HQ) - Three-Tier Architecture
 The HQ utilizes a full 3-Tier architecture (Core, Distribution, Access) to handle massive workloads and eliminate Single Points of Failure (SPOF).
 
-![HQ Three-Tier Architecture](hq.png)
+![HQ Three-Tier Architecture](NetDesign/hq.png)
 
 * **Core Layer:** Employs two Multilayer Switches (Catalyst 3560) cross-connected to the Edge Routers and Distribution Switches, serving as a high-speed routing processing center.
 * **Distribution Layer:** Isolates broadcast domains between departmental areas and acts as the default gateway (Switch Virtual Interface / SVI) for each VLAN.
@@ -22,7 +22,7 @@ The HQ utilizes a full 3-Tier architecture (Core, Distribution, Access) to handl
 ### 2. Branch Office - Collapsed Core Architecture
 The Branch Office uses a Collapsed Core design (merging the Core and Distribution layers) to optimize hardware capital expenditure (CAPEX) while maintaining full redundancy.
 
-![Branch Collapsed Core Architecture](branch.png)
+![Branch Collapsed Core Architecture](NetDesign/branch.png)
 
 * **Collapsed Core Layer:** A pair of Multilayer Switches (Catalyst 3560) handles internal routing between departments (VLAN 10 Ops, VLAN 20 Finance, VLAN 30 Sales) and provides centralized DHCP services via IP Helper.
 * **WAN Edge Layer:** Two branch routers are cross-connected to the core layer and the ISP to translate Private IPs into Public IPs.
