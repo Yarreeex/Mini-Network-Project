@@ -1,42 +1,45 @@
-# Mini Network Design: OSPF, NAT & Site-to-Site IPsec VPN
+# Enterprise Campus Network Design: High Availability, OSPF, NAT & IPsec VPN
 
-## 📖 Project Overview
-This project involves the design and simulation of a large-scale enterprise network infrastructure connecting a Headquarters (HQ) and a Branch Office via a public Internet Service Provider (ISP). It demonstrates the implementation of standard Cisco architectures with a primary focus on **High Availability**, **Scalability**, and **Cross-Site Security**.
+**Author:** Ahmad Gimnastiar
 
-The main challenge addressed in this project is ensuring secure isolation between departments, dynamic inter-building communication, and encrypted transmission of confidential data across the public internet.
+## 📖 Executive Summary
+This project demonstrates the end-to-end design and implementation of a highly available, secure, and cost-effective enterprise network. Connecting a Headquarters (HQ) and a Branch office over a public ISP, the architecture strictly adheres to enterprise-grade standards suitable for large-scale operations. The design meticulously balances robust technical performance with financial efficiency, optimizing both CAPEX and OPEX while ensuring strict departmental security segregation.
 
 ![Full Enterprise Network Topology](NetDesign/full.png)
 
+## 💼 Business Value & Cost Efficiency (CAPEX / OPEX)
+* **Optimized CAPEX (Capital Expenditure):** Hardware procurement costs are significantly minimized by strategically deploying advanced Multilayer Switches (Layer 3) exclusively at the Core/Distribution tiers. The Access layer utilizes highly cost-effective Layer 2 switches (Catalyst 2960), and the Branch network adopts a streamlined Collapsed Core architecture.
+* **Reduced OPEX (Operational Expenditure):** Network management is deeply centralized. Core services (e.g., DHCP and Database Servers) are isolated within the Data Center, drastically reducing maintenance overhead, simplifying troubleshooting, and streamlining centralized visibility for Network Monitoring Center (NMC) teams.
+* **Risk Mitigation:** Strict VLAN segregation across 10 different departments prevents lateral movement of unauthorized traffic, securing sensitive financial and R&D data from other corporate zones.
+
 ## 🏗️ Network Architecture
-The network design is divided into two main areas, utilizing hierarchical architecture approaches tailored to the scale and requirements of each site:
 
-### 1. Headquarters (HQ) - Three-Tier Architecture
-The HQ utilizes a full 3-Tier architecture (Core, Distribution, Access) to handle massive workloads and eliminate Single Points of Failure (SPOF).
+### 1. Headquarters (HQ) - Modular Three-Tier Architecture
+The HQ utilizes a full 3-Tier architecture, segmented into three functional zones to handle massive workloads and eliminate Single Points of Failure (SPOF).
 
-![HQ Three-Tier Architecture](NetDesign/hq.png)
+![HQ Three-Tier Architecture with 10 Departments](NetDesign/hq.png)
 
-* **Core Layer:** Employs two Multilayer Switches (Catalyst 3560) cross-connected to the Edge Routers and Distribution Switches, serving as a high-speed routing processing center.
-* **Distribution Layer:** Isolates broadcast domains between departmental areas and acts as the default gateway (Switch Virtual Interface / SVI) for each VLAN.
-* **Server Farm:** Isolates centralized services (e.g., DHCP and Database Servers) under VLAN 100 with Static IP management for enhanced security.
+* **Core Operations Zone:** Houses critical infrastructure with static IP management. Includes Data Center Operations (Centralized DHCP/DB), Research & Development (R&D), and Finance & Accounting departments.
+* **Logistics & Commercial Zone:** Manages external-facing and supply-chain traffic. Includes Logistics & Supply, Sales & Marketing, and Remote Office Operations.
+* **Corporate Management Zone:** Handles internal administrative operations. Includes HR, Training, IT, and Development departments.
 
 ### 2. Branch Office - Collapsed Core Architecture
-The Branch Office uses a Collapsed Core design (merging the Core and Distribution layers) to optimize hardware capital expenditure (CAPEX) while maintaining full redundancy.
+The Branch Office uses a Collapsed Core design to optimize hardware costs while maintaining full cross-routing redundancy.
 
 ![Branch Collapsed Core Architecture](NetDesign/branch.png)
 
-* **Collapsed Core Layer:** A pair of Multilayer Switches (Catalyst 3560) handles internal routing between departments (VLAN 10 Ops, VLAN 20 Finance, VLAN 30 Sales) and provides centralized DHCP services via IP Helper.
-* **WAN Edge Layer:** Two branch routers are cross-connected to the core layer and the ISP to translate Private IPs into Public IPs.
+* **Collapsed Core Layer:** A pair of Multilayer Switches (Catalyst 3560) handles internal routing between branch departments (Ops, Finance, Sales) and provides localized DHCP services via IP Helper.
+* **WAN Edge Layer:** Dual branch routers are cross-connected to the core layer and the ISP to ensure uninterrupted internet and VPN connectivity.
 
-## 🛠️ Key Technologies & Protocols
-This project implements various industry-standard network protocols:
-* **Routing Protocol:** Implemented **OSPFv2 Multi-Area** (Area 0 for the external Backbone, Area 10 for the HQ internal network, and Area 20 for the Branch internal network).
-* **Security & Tunneling:** Established a **Site-to-Site IPsec VPN** using ISAKMP (Phase 1) and IPsec (Phase 2) with AES-256 encryption to secure inter-site data.
-* **Address Translation:** Configured **NAT Overload (PAT)** equipped with an Access Control List (ACL) for *NAT Exemption*, allowing internet access without disrupting VPN traffic.
-* **LAN Switching:** Implemented **VLANs**, **Inter-VLAN Routing (SVI)**, IEEE 802.1Q **Trunking**, and automated loop prevention using **Spanning Tree Protocol (STP)**.
-* **IP Services:** Automated IP management using centralized **DHCP Servers** and **DHCP Relay (IP Helper-Address)** configurations across subnets.
+## 🛠️ Key Technologies & Protocols Implemented
+* **Routing:** **OSPFv2 Multi-Area** (Area 0 for Backbone, Area 10 for HQ, Area 20 for Branch) engineered with custom interface costs to resolve asymmetric routing and establish Active/Standby paths.
+* **Security & Tunneling:** **Site-to-Site IPsec VPN** using ISAKMP (Phase 1) and IPsec (Phase 2) with AES encryption to secure inter-site confidential data.
+* **Address Translation:** **NAT Overload (PAT)** configured with strict Access Control Lists (ACLs) for *NAT Exemption*, allowing internet access without disrupting encrypted VPN tunnels.
+* **LAN Switching:** Comprehensive **VLAN** tagging, **Inter-VLAN Routing (SVI)**, IEEE 802.1Q **Trunking**, and automated loop prevention via **Spanning Tree Protocol (STP)**.
+* **IP Services:** Automated IP provisioning using centralized **DHCP Servers** and **DHCP Relay (IP Helper-Address)** spanning across 10 distinct subnets.
 
 ## 🚀 Proof of Work (Validation & Testing)
-This infrastructure has undergone comprehensive end-to-end testing:
-1. **Internet Connectivity:** End-user PCs successfully `ping` the ISP network, verifying NAT Overload functionality.
-2. **Dynamic Routing Adjacency:** Routing tables on core devices populate dynamically, evidenced by `O` (OSPF Internal) and `O IA` (OSPF Inter-Area) routes.
-3. **Encrypted Site-to-Site Traffic:** Successful private data access between sites (`10.10.x.x` communicating with `10.20.x.x`) across the ISP. The `show crypto ipsec sa` verification proves that data packets are actively encapsulated and encrypted by the VPN tunnel.
+This infrastructure has successfully passed comprehensive end-to-end testing:
+1. **Dynamic Routing Adjacency:** Routing tables populate dynamically, evidenced by `O` (OSPF Internal) and `O IA` (OSPF Inter-Area) routes across all multilayer switches.
+2. **Encrypted Site-to-Site Traffic:** Successful ICMP requests between private sites (`10.10.x.x` to `10.20.x.x`) across the public ISP. The `show crypto ipsec sa` validation proves that data packets are actively encapsulated and encrypted by the VPN tunnel.
+3. **Failover Resilience:** Continuous ping tests confirm zero network downtime during simulated primary link failures, validating the High Availability cross-connect design.
