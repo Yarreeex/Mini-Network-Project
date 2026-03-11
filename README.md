@@ -5,7 +5,7 @@
 ## 📖 Executive Summary
 This project demonstrates the end-to-end design and implementation of a highly available, secure, and cost-effective enterprise network. Connecting a Headquarters (HQ) and a Branch office over a public ISP, the architecture strictly adheres to enterprise-grade standards suitable for large-scale operations. The design meticulously balances robust technical performance with financial efficiency, optimizing both CAPEX and OPEX while ensuring strict departmental security segregation.
 
-![Full Enterprise Network Topology](NetDesign/full.png)
+![Full Enterprise Network Topology](NetDesign/fullv2.png)
 
 ## 💼 Business Value & Cost Efficiency (CAPEX / OPEX)
 * **Optimized CAPEX (Capital Expenditure):** Hardware procurement costs are significantly minimized by strategically deploying advanced Multilayer Switches (Layer 3) exclusively at the Core/Distribution tiers. The Access layer utilizes highly cost-effective Layer 2 switches (Catalyst 2960), and the Branch network adopts a streamlined Collapsed Core architecture.
@@ -17,7 +17,7 @@ This project demonstrates the end-to-end design and implementation of a highly a
 ### 1. Headquarters (HQ) - Modular Three-Tier Architecture
 The HQ utilizes a full 3-Tier architecture, segmented into three functional zones to handle massive workloads and eliminate Single Points of Failure (SPOF).
 
-![HQ Three-Tier Architecture with 10 Departments](NetDesign/hq.png)
+![HQ Three-Tier Architecture with 10 Departments](NetDesign/hqv2.png)
 
 * **Core Operations Zone:** Houses critical infrastructure with static IP management. Includes Data Center Operations (Centralized DHCP/DB), Research & Development (R&D), and Finance & Accounting departments.
 * **Logistics & Commercial Zone:** Manages external-facing and supply-chain traffic. Includes Logistics & Supply, Sales & Marketing, and Remote Office Operations.
@@ -26,7 +26,7 @@ The HQ utilizes a full 3-Tier architecture, segmented into three functional zone
 ### 2. Branch Office - Collapsed Core Architecture
 The Branch Office uses a Collapsed Core design to optimize hardware costs while maintaining full cross-routing redundancy.
 
-![Branch Collapsed Core Architecture](NetDesign/branch.png)
+![Branch Collapsed Core Architecture](NetDesign/branchv2.png)
 
 * **Collapsed Core Layer:** A pair of Multilayer Switches (Catalyst 3560) handles internal routing between branch departments (Ops, Finance, Sales) and provides localized DHCP services via IP Helper.
 * **WAN Edge Layer:** Dual branch routers are cross-connected to the core layer and the ISP to ensure uninterrupted internet and VPN connectivity.
